@@ -69,6 +69,16 @@
         { id: 2, price: 60000, title: 'Black Monastery' },
       ];
 
+      // localStorage.setItem('이름', 'kim'); //local => session으로 바꾸면 session storage저장
+      // localStorage.getItem('이름');
+      // localStorage.removeItem('이름');
+      // var arr = [1, 2, 3];
+      // var newArr = JSON.stringify(arr);
+
+      // localStorage.setItem('num', newArr);
+      // var 꺼낸거 = localStorage.getItem('num');
+      // var parsed = JSON.parse(꺼낸거);
+
       //   for (let i = 0; i < $('.card').length; i++) {
       //     dataBinding(i);
       //   }
@@ -81,13 +91,30 @@
         products.forEach(function (p) {
           $('.row').append(`<div class="col-sm-4">
               <img src="https://via.placeholder.com/600" class="w-100">
-              <h5>${p.title}</h5>
+              <h5 class="title">${p.title}</h5>
               <p>가격 : ${p.price}</p>
+              <button class="btn btn-primary buy">구매</button>
             </div>`);
         });
       }
 
       listUpCards(products);
+
+      $('.buy').click(function () {
+        var content = $(this).siblings('h5').text();
+        if (localStorage.getItem('cart') == null) {
+          var arr = new Array();
+          arr.push(content);
+          var newArr = JSON.stringify(arr);
+          localStorage.setItem('cart', newArr);
+        } else {
+          var cart = localStorage.getItem('cart');
+          var arr = JSON.parse(cart);
+          arr.push(content);
+          var newArr = JSON.stringify(arr);
+          localStorage.setItem('cart', newArr);
+        }
+      });
 
       $('#sort').click(function () {
         products.sort(function (a, b) {
@@ -171,16 +198,16 @@
     </script>
 
     <script>
-      var 어레이 = [7, 3, 5, 2, 40];
+      // var 어레이 = [7, 3, 5, 2, 40];
 
-      var 새어레이 = 어레이.filter(function (a) {
-        //filter는 새 변수에 담아 써야 함
-        return a < 4;
-      });
+      // var 새어레이 = 어레이.filter(function (a) {
+      //   //filter는 새 변수에 담아 써야 함
+      //   return a < 4;
+      // });
 
-      var 새어레이2 = 어레이.map(function (a) {
-        return a * 4;
-      });
+      // var 새어레이2 = 어레이.map(function (a) {
+      //   return a * 4;
+      // });
       //   어레이.sort(function (a, b) {        //sort는 원본을 수정해버림
       //     return a - b;
       //   });
