@@ -66,13 +66,13 @@
     <div style="overflow: hidden">
       <div class="slide-container">
         <div class="slide-box">
-          <img src="1.jpg" />
+          <img src="1.jpg" draggable="false" />
         </div>
         <div class="slide-box">
-          <img src="2.jpg" />
+          <img src="2.jpg" draggable="false" />
         </div>
         <div class="slide-box">
-          <img src="3.jpg" />
+          <img src="3.jpg" draggable="false" />
         </div>
       </div>
     </div>
@@ -247,6 +247,135 @@
         console.log(e.target);
         console.log(this);
       });
+
+      var 시작좌표 = 0;
+      var 눌렀니 = false;
+
+      for (var i = 0; i < 3; i++) {
+        slideAction(i);
+        slideActionTouch(i);
+      }
+
+      function slideAction(index) {
+        $('.slide-box')
+          .eq(index)
+          .on('mousedown', function (e) {
+            시작좌표 = e.clientX;
+            눌렀니 = true;
+            console.log(눌렀니);
+          });
+
+        $('.slide-box')
+          .eq(index)
+          .on('mousemove', function (e) {
+            if (눌렀니 == true) {
+              $('.slide-container').css(
+                'transform',
+                `translateX(${e.clientX - 시작좌표}px)`
+              );
+              console.log(e.clientX - 시작좌표);
+            }
+          });
+
+        $('.slide-box')
+          .eq(index)
+          .on('mouseup', function (e) {
+            눌렀니 = false;
+
+            console.log(e.clientX - 시작좌표);
+            if (e.clientX - 시작좌표 < -100 && index < 2) {
+              눌렀니 = false;
+
+              $('.slide-container').css(
+                'transform',
+                `translateX(-${index + 1}00vw)`
+              );
+              page = index + 2;
+            } else if (e.clientX - 시작좌표 > 100 && index > 0) {
+              눌렀니 = false;
+
+              $('.slide-container').css(
+                'transform',
+                `translateX(-${index - 1}00vw)`
+              );
+              page = index;
+            } else if (
+              e.clientX - 시작좌표 >= -100 &&
+              e.clientX - 시작좌표 <= 100
+            ) {
+              눌렀니 = false;
+
+              $('.slide-container').css(
+                'transform',
+                `translateX(-${index}00vw)`
+              );
+              page = index + 1;
+            }
+            console.log(눌렀니);
+          });
+      }
+
+      function slideActionTouch(index) {
+        $('.slide-box')
+          .eq(index)
+          .on('touchstart', function (e) {
+            시작좌표 = e.touches[0].clientX;
+            눌렀니 = true;
+            console.log(눌렀니);
+          });
+
+        $('.slide-box')
+          .eq(index)
+          .on('touchmove', function (e) {
+            if (눌렀니 == true) {
+              $('.slide-container').css(
+                'transform',
+                `translateX(${e.touches[0].clientX - 시작좌표}px)`
+              );
+              console.log(e.touches[0].clientX - 시작좌표);
+            }
+          });
+
+        $('.slide-box')
+          .eq(index)
+          .on('touchend', function (e) {
+            눌렀니 = false;
+
+            console.log(e.changedTouches[0].clientX - 시작좌표);
+            if (e.changedTouches[0].clientX - 시작좌표 < -100 && index < 2) {
+              눌렀니 = false;
+
+              $('.slide-container').css(
+                'transform',
+                `translateX(-${index + 1}00vw)`
+              );
+              page = index + 2;
+            } else if (
+              e.changedTouches[0].clientX - 시작좌표 > 100 &&
+              index > 0
+            ) {
+              눌렀니 = false;
+
+              $('.slide-container').css(
+                'transform',
+                `translateX(-${index - 1}00vw)`
+              );
+              page = index;
+            } else if (
+              e.changedTouches[0].clientX - 시작좌표 >= -100 &&
+              e.changedTouches[0].clientX - 시작좌표 <= 100
+            ) {
+              눌렀니 = false;
+
+              $('.slide-container').css(
+                'transform',
+                `translateX(-${index}00vw)`
+              );
+              page = index + 1;
+            }
+            console.log(눌렀니);
+          });
+      }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
